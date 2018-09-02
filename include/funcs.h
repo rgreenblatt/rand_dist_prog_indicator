@@ -9,7 +9,7 @@ double num_integrate(boost::function<double(double)> func, double min, double ma
 
 double cumlat_dist(double x, unsigned int remaining_samples);
 
-double shifted_cumlat_dist(double x, unsigned int remaining_samples, double min, double max, double adder);
+double shifted_cumlat_dist(double x, unsigned int remaining_samples, double min, double max);
 
 double integrated_func(double x, std::vector<boost::function<double(double)>> shifted_cumlat_dist_filled_funcs, double err_bound);
 

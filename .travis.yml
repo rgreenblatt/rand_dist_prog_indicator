@@ -1,0 +1,36 @@
+sudo: required # Necessary when using Docker
+
+language: cpp
+
+compiler: gcc
+
+services:
+  - docker
+
+install:
+  - travis_wait 45 docker pull greenblattryan/num-integrator-builder:latest
+
+script:
+  - docker run greenblattryan/num-integrator-builder:latest /bin/bash -l -c
+    "git clone https://github.com/rgreenblatt/rand_dist_prog_indicator &&
+     cd ./rand_dist_prog_indicator &&
+     git checkout $TRAVIS_COMMIT &&
+     echo COMMIT &&
+     echo $TRAVIS_COMMIT &&
+     echo COMMITMSG &&
+     echo $TRAVIS_COMMIT_MESSAGE &&
+     echo BRANCH &&
+     echo $TRAVIS_BRANCH &&
+     git log -n1 &&
+     ./build.sh &&
+     echo \"Finished compile.\" &&
+     ./bin/tests &&
+     echo \"Finished tests.\" &&
+     ./bin/app &&
+     echo \"Finished running app.\" &&
+     echo \"Finished Travis.\""
+build:
+  - true
+
+notifications:
+email: false

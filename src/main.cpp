@@ -12,13 +12,15 @@ int main() {
     std::vector<std::shared_ptr<std::atomic<unsigned int>>> sleep_counts;
     std::vector<std::shared_ptr<std::atomic<double>>> total_sleep;
 
-    unsigned int dist_min = 100;
+    unsigned int dist_min = 200;
     
-    unsigned int dist_max = 150;
+    unsigned int dist_max = 650;
  
     unsigned int total_sleep_count = 10;
+
+    unsigned int num_instances = 15;
     
-    for(unsigned int i = 0; i < total_sleep_count; i++) {
+    for(unsigned int i = 0; i < num_instances; i++) {
         sleep_counts.push_back(std::make_shared<std::atomic<unsigned int>>(total_sleep_count));
         total_sleep.push_back(std::make_shared<std::atomic<double>>(0));
         std::thread test(sleep_test, sleep_counts[i], total_sleep[i], dist_min, dist_max, total_sleep_count);
@@ -38,14 +40,12 @@ int main() {
         }
 
         for(auto &iter : total_sleep) {
-            loaded_sleeps.push_back(iter->load());
+            loaded_sleeps.push_back(/*iter->load()*/ 0);
         }
 
         std::pair<unsigned int, unsigned int> min_max = get_min_max(loaded_counts);
     
-        std::cout << "_______1" << std::endl;
-
-        std::cout << "\x1b[A" << "\x1b[2K" << "Min count: " << min_max.first << " max count: " << min_max.second << " ETA: " << expected_val(loaded_counts, loaded_sleeps, dist_min, dist_max, 0.1, total_sleep_count) / 1000.0 - std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - start_time).count() << std::endl; 
+        std::cout << /*"\x1b[A" << "\x1b[2K" <<*/ "Min count: " << min_max.first << " max count: " << min_max.second << " ETA: " << expected_val(loaded_counts, loaded_sleeps, dist_min, dist_max, 1, total_sleep_count) / 1000.0 - std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - start_time).count() << std::endl; 
 
         std::this_thread::sleep_for(std::chrono::milliseconds(40));
 

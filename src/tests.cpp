@@ -82,18 +82,17 @@ struct shifted_cumlat_dist_tests {
     unsigned int remaining_samples = 0;
     double min = 0.0;
     double max = 0.0;
-    double adder = 0.0;
 };
 
 TEST(shifted_cumlat_dist, value) {
     std::vector<shifted_cumlat_dist_tests> tests = {
-    {0.5, 2.5, 2, 1.0, 2.0, 0.0},
-    {0.108201505412, 17.65, 3, 3.0, 9.6, 0.0},
-    {0.0278264853498, 53.65, 9, 5, 8, 0.0},
+    {0.5, 2.5, 2, 1.0, 2.0},
+    {0.108201505412, 17.65, 3, 3.0, 9.6},
+    {0.0278264853498, 53.65, 9, 5, 8},
     };
 
     for(auto &test : tests) {
-        ASSERT_NEAR(shifted_cumlat_dist(test.x, test.remaining_samples, test.min, test.max, test.adder), test.expected, test.expected * 0.001);
+        ASSERT_NEAR(shifted_cumlat_dist(test.x, test.remaining_samples, test.min, test.max), test.expected, test.expected * 0.001);
     }
 }
 
