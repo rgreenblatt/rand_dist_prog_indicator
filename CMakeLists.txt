@@ -28,4 +28,4 @@ add_executable(app
 )
 
 target_link_libraries(tests ${GTEST_LIBRARIES} libtanhsinh.a pthread) 
-target_link_libraries(app tanhsinh pthread) 
+target_link_libraries(app libtanhsinh.a pthread) 
