@@ -4,14 +4,13 @@
 #include <thread>
 #include <random>
 #include <memory>
-#include <functional>
 #include <limits.h>
 #include <assert.h>
 #include <boost/math/special_functions/binomial.hpp>
 #include <boost/math/special_functions/factorials.hpp>
 #include <boost/math/special_functions/sign.hpp>
 #include <boost/bind.hpp>
-#include <iostream>
+//#include <iostream>
 #include <tanhsinh.h>
 
 void sleep_test(std::shared_ptr<std::atomic<unsigned int>> count, std::shared_ptr<std::atomic<double>> total, unsigned int dist_min, unsigned int dist_max, unsigned int total_sleep_count) {
