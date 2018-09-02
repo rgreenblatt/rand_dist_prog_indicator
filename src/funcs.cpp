@@ -37,7 +37,6 @@ double boost_func_to_real(double x, const void * func) {
     return (* boost_func_ptr)(x);
 }
 
-
 double num_integrate(boost::function<double(double)> func, double min, double max, double err_bound) {
     void * func_ptr = &func;
 
