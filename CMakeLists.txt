@@ -27,5 +27,5 @@ add_executable(app
     "${PROJECT_SOURCE_DIR}/src/funcs.cpp"
 )
 
-target_link_libraries(tests ${GTEST_LIBRARIES} tanhsinh pthread) 
+target_link_libraries(tests ${GTEST_LIBRARIES} libtanhsinh.a pthread) 
 target_link_libraries(app tanhsinh pthread) 
