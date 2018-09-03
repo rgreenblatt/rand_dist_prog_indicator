@@ -54,8 +54,11 @@ TEST(integrate, value) {
 
     double actual = integrated(max) - integrated(min);
 
-    ASSERT_NEAR(num_integrate(boost::bind(&poly_func, ::_1, a, b, c, d, e, f), min, max, 0.1), actual, 0.1);
+    bool err;
 
+    ASSERT_NEAR(num_integrate(boost::bind(&poly_func, ::_1, a, b, c, d, e, f), min, max, 0.1, err), actual, 0.1);
+
+    ASSERT_FALSE(err);
 }
 
 struct cumlat_dist_tests {
@@ -82,17 +85,19 @@ struct shifted_cumlat_dist_tests {
     unsigned int remaining_samples = 0;
     double min = 0.0;
     double max = 0.0;
+    double adder = 0.0;
 };
 
 TEST(shifted_cumlat_dist, value) {
     std::vector<shifted_cumlat_dist_tests> tests = {
-    {0.5, 2.5, 2, 1.0, 2.0},
-    {0.108201505412, 17.65, 3, 3.0, 9.6},
-    {0.0278264853498, 53.65, 9, 5, 8},
+    {0.5, 2.5, 2, 1.0, 2.0, 0.0},
+    {0.108201505412, 17.65, 3, 3.0, 9.6, 0.0},
+    {0.0278264853498, 53.65, 9, 5, 8, 0.0},
+    {0.00110617832647, 1501.0, 3, 200, 650, 0.0},
     };
 
     for(auto &test : tests) {
-        ASSERT_NEAR(shifted_cumlat_dist(test.x, test.remaining_samples, test.min, test.max), test.expected, test.expected * 0.001);
+        ASSERT_NEAR(shifted_cumlat_dist(test.x, test.remaining_samples, test.min, test.max, test.adder), test.expected, test.expected * 0.001);
     }
 }
 
@@ -102,17 +107,18 @@ struct expected_val_tests {
     std::vector<double> adders;
     double min = 0.0;
     double max = 0.0;
-    unsigned int steps = 1000;
-    unsigned int total_samples = 100;
+    double err_bound = 0.1;
+    bool min_or_max = true;
 };
 
 TEST(expected_val, value) {
     std::vector<expected_val_tests> tests = {
-    {57.0300758469, {9, 9}, {0, 0}, 5, 8, 1000, 9},
+    {57.0300758469, {9, 9}, {0, 0}, 5, 8, 0.1, 9},
+    {1274.99929778, {3}, {0}, 200, 650, 0.001, 3},
     };
 
     for(auto &test : tests) {
-        ASSERT_NEAR(expected_val(test.remaining_samples_per, test.adders, test.min, test.max, test.steps, test.total_samples), test.expected, test.expected * 0.05);
+        ASSERT_NEAR(expected_val(test.remaining_samples_per, test.adders, test.min, test.max, test.err_bound, test.min_or_max), test.expected, test.expected * 0.05);
     }
 }
 
